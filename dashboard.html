@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - RestroTrack</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="./images/agentura.png" alt="RestroTrack Logo">
+            <h2>RestroTrack</h2>
+        </div>
+        <ul class="nav-links">
+            <li class="active"><a href="dashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+            <li><a href="inventory.html"><i class="fas fa-box"></i><span>Inventory</span></a></li>
+            <li><a href="orders.html"><i class="fas fa-shopping-cart"></i><span>Orders</span></a></li>
+            <li><a href="expiry-tracker.html"><i class="fas fa-calendar-alt"></i><span>Expiry Tracker</span></a></li>
+            <li><a href="analytics.html"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+            <li><a href="ai-chat.html"><i class="fas fa-robot"></i><span>AI Chat</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <div class="header-left">
+                <h2>Dashboard</h2>
+            </div>
+        </header>
+
+        <!-- Overview Cards -->
+        <section class="dashboard-cards">
+            <div class="card total-items">
+                <div class="card-icon">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Total Items</h3>
+                    <p id="total-items-count">0</p>
+                </div>
+            </div>
+            <div class="card inventory-value">
+                <div class="card-icon">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Total Value</h3>
+                    <p id="total-value">₹0.00</p>
+                </div>
+            </div>
+            <div class="card low-stock">
+                <div class="card-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Low Stock Items</h3>
+                    <p id="low-stock-count">0</p>
+                </div>
+            </div>
+            <div class="card expiring-soon">
+                <div class="card-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="card-content">
+                    <h3>Expiring Soon</h3>
+                    <p id="expiring-soon-count">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts and Analytics -->
+        <div class="dashboard-grid">
+            <!-- Category Distribution -->
+            <section class="dashboard-section category-distribution">
+                <h3>Category Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="category-chart"></canvas>
+                </div>
+                <div class="category-stats">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Stock Status -->
+            <section class="dashboard-section stock-status">
+                <h3>Stock Status</h3>
+                <div class="status-grid">
+                    <div class="status-card critical">
+                        <h4>Critical Stock</h4>
+                        <p id="critical-stock-count">0</p>
+                    </div>
+                    <div class="status-card warning">
+                        <h4>Low Stock</h4>
+                        <p id="warning-stock-count">0</p>
+                    </div>
+                    <div class="status-card good">
+                        <h4>Well Stocked</h4>
+                        <p id="good-stock-count">0</p>
+                    </div>
+                    <div class="status-card out">
+                        <h4>Out of Stock</h4>
+                        <p id="out-stock-count">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expiry Tracking -->
+            <section class="dashboard-section expiry-tracking">
+                <h3>Expiry Tracking</h3>
+                <div class="expiry-timeline">
+                    <div class="expiry-card critical">
+                        <h4>Critical (≤2 days)</h4>
+                        <p id="critical-expiry-count">0</p>
+                    </div>
+                    <div class="expiry-card warning">
+                        <h4>Warning (≤4 days)</h4>
+                        <p id="warning-expiry-count">0</p>
+                    </div>
+                    <div class="expiry-card upcoming">
+                        <h4>Upcoming (≤7 days)</h4>
+                        <p id="upcoming-expiry-count">0</p>
+                    </div>
+                </div>
+                <div class="expiry-chart">
+                    <canvas id="expiry-chart"></canvas>
+                </div>
+            </section>
+
+            <!-- Top Items -->
+            <section class="dashboard-section top-items">
+                <h3>Items Needing Attention</h3>
+                <div class="items-table-container">
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Stock Status</th>
+                                <th>Expiry</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attention-items">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Category Value Analysis -->
+        <section class="dashboard-section category-analysis">
+            <h3>Category-wise Value Analysis</h3>
+            <div class="category-chart-container">
+                <canvas id="category-value-chart"></canvas>
+            </div>
+            <div class="category-metrics">
+                <div class="metric">
+                    <h4>Most Valuable Category</h4>
+                    <p id="most-valuable-category">-</p>
+                </div>
+                <div class="metric">
+                    <h4>Most Stocked Category</h4>
+                    <p id="most-stocked-category">-</p>
+                </div>
+                <div class="metric">
+                    <h4>Category Needing Attention</h4>
+                    <p id="attention-category">-</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- AI Assistant Button -->
+    <button id="ai-assistant-btn" class="ai-assistant-btn">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <!-- AI Assistant Panel -->
+    <div id="ai-assistant-panel" class="ai-assistant-panel">
+        <div class="ai-assistant-header">
+            <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+            <button id="close-ai-assistant"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="ai-chat-messages" class="ai-chat-messages"></div>
+        <div class="ai-input-container">
+            <input type="text" id="ai-input" placeholder="Ask me anything...">
+            <button id="ai-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/dashboard.js"></script>
+</body>
+</html> 

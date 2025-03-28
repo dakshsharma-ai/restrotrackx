@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat - RestroTrack</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <img src="./images/agentura.png" alt="RestroTrack Logo">
+                <h2>RestroTrack</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html"><i class="fas fa-home"></i><span>Dashboard</span></a></li>
+                <li><a href="inventory.html"><i class="fas fa-box"></i><span>Inventory</span></a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i><span>Orders</span></a></li>
+                <li><a href="expiry-tracker.html"><i class="fas fa-calendar-alt"></i><span>Expiry Tracker</span></a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-line"></i><span>Analytics</span></a></li>
+                <li class="active"><a href="ai-chat.html"><i class="fas fa-robot"></i><span>AI Chat</span></a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="page-header">
+                <h1>AI Chat Assistant</h1>
+            </header>
+
+            <div class="chat-container">
+                <div class="chat-sidebar">
+                    <div class="chat-header">
+                        <h3>Conversations</h3>
+                        <button id="new-conversation-btn" class="neon-button">
+                            <i class="fas fa-plus"></i> New Chat
+                        </button>
+                    </div>
+                    <div class="chat-history" id="chat-history">
+                        <!-- Chat history will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <div class="chat-title">
+                            <i class="fas fa-robot robot-icon pulse"></i>
+                            <h2>RestroTrack AI</h2>
+                            <span class="status-indicator">Online</span>
+                        </div>
+                        <div class="chat-actions">
+                            <button id="clear-chat-btn" class="neon-button" title="Clear conversation">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button id="export-chat-btn" class="neon-button" title="Export conversation">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="ai-chat-messages">
+                        <!-- Messages will be populated by JavaScript -->
+                    </div>
+
+                    <div class="chat-input">
+                        <div class="chat-input-container">
+                            <input type="text" id="ai-input-field" placeholder="Ask me anything about inventory, orders, or analytics...">
+                            <div class="input-actions">
+                                <button id="voice-input-btn" class="neon-button voice-btn" title="Voice input">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button id="ai-send-button" class="neon-button send-btn" title="Send message">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <style>
+        .chat-container {
+            display: flex;
+            gap: 2rem;
+            height: calc(100vh - 100px);
+            padding: 1rem;
+        }
+
+        .chat-sidebar {
+            width: 300px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(78, 205, 196, 0.1);
+        }
+
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(78, 205, 196, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-main {
+            flex: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(78, 205, 196, 0.1);
+        }
+
+        .chat-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .robot-icon {
+            font-size: 1.5rem;
+            color: #4ECDC4;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .status-indicator {
+            font-size: 0.875rem;
+            color: #4ECDC4;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-message {
+            flex-direction: row-reverse;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 1rem;
+            border-radius: 15px;
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.2);
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.1);
+        }
+
+        .user-message .message-content {
+            background: rgba(78, 205, 196, 0.2);
+        }
+
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid rgba(78, 205, 196, 0.1);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input-container {
+            flex: 1;
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(78, 205, 196, 0.05);
+            border-radius: 30px;
+            padding: 0.5rem;
+            position: relative;
+            border: 1px solid rgba(78, 205, 196, 0.2);
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input-container:focus-within {
+            border-color: rgba(78, 205, 196, 0.6);
+            box-shadow: 0 0 15px rgba(78, 205, 196, 0.4), 
+                        inset 0 0 5px rgba(78, 205, 196, 0.1);
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        #ai-input-field {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        #ai-input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.3s ease;
+        }
+        
+        #ai-input-field:focus::placeholder {
+            color: rgba(78, 205, 196, 0.5);
+        }
+
+        .neon-button {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.2);
+            color: #4ECDC4;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .neon-button:hover {
+            background: rgba(78, 205, 196, 0.2);
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .voice-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-btn.listening {
+            animation: listening 1.5s infinite;
+            background: rgba(78, 205, 196, 0.3);
+        }
+
+        @keyframes listening {
+            0% { box-shadow: 0 0 0 0 rgba(78, 205, 196, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(78, 205, 196, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 205, 196, 0); }
+        }
+    </style>
+
+    <script src="./js/ai-chat.js"></script>
+</body>
+</html> 

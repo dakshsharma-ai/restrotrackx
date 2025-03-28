@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - RestroTrack</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="./images/agentura.png" alt="RestroTrack Logo">
+                <h2>RestroTrack</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="inventory.html"><i class="fas fa-box"></i> <span>Inventory</span></a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                    <li><a href="expiry-tracker.html"><i class="fas fa-calendar-alt"></i> <span>Expiry Tracker</span></a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
+                    <li class="active"><a href="ai-chat.html"><i class="fas fa-robot"></i> <span>AI Chat</span></a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <img src="./images/user.png" alt="User Profile">
+                <div>
+                    <h4>Restaurant Manager</h4>
+                    <p>Admin</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <header>
+                <div class="header-content">
+                    <h1>AI Assistant</h1>
+                    <div class="header-icons">
+                        <i class="fas fa-bell"></i>
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+            </header>
+
+            <div class="ai-assistant-container">
+                <div class="ai-assistant-sidebar">
+                    <div class="ai-assistant-header">
+                        <h3>Conversations</h3>
+                        <button id="new-conversation-btn"><i class="fas fa-plus"></i> New Chat</button>
+                    </div>
+                    <div class="conversation-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search conversations...">
+                    </div>
+                    <div class="conversation-list" id="conversation-list">
+                        <div class="conversation-item active">
+                            <div class="conversation-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="conversation-info">
+                                <h4>Inventory Questions</h4>
+                                <p>Today, 10:30 AM</p>
+                            </div>
+                        </div>
+                        <div class="conversation-item">
+                            <div class="conversation-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="conversation-info">
+                                <h4>Order Planning</h4>
+                                <p>Yesterday, 2:15 PM</p>
+                            </div>
+                        </div>
+                        <div class="conversation-item">
+                            <div class="conversation-icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <div class="conversation-info">
+                                <h4>Expiry Management</h4>
+                                <p>Mar 15, 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-chat-container">
+                    <div class="ai-chat-header">
+                        <div class="ai-profile">
+                            <div class="ai-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="ai-info">
+                                <h3>RestroTrack AI</h3>
+                                <p>Online</p>
+                            </div>
+                        </div>
+                        <div class="ai-actions">
+                            <button id="clear-chat-btn"><i class="fas fa-trash"></i></button>
+                            <button id="export-chat-btn"><i class="fas fa-download"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="ai-chat-messages" id="ai-chat-messages">
+                        <div class="ai-welcome">
+                            <div class="ai-welcome-header">
+                                <i class="fas fa-robot"></i>
+                                <h2>RestroTrack AI Assistant</h2>
+                            </div>
+                            <p>Hello! I'm your intelligent inventory management assistant. I can help you with:</p>
+                            <div class="ai-capabilities">
+                                <div class="ai-capability">
+                                    <i class="fas fa-search"></i>
+                                    <span>Finding inventory information</span>
+                                </div>
+                                <div class="ai-capability">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Analyzing inventory trends</span>
+                                </div>
+                                <div class="ai-capability">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Managing expiry dates</span>
+                                </div>
+                                <div class="ai-capability">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span>Optimizing order quantities</span>
+                                </div>
+                                <div class="ai-capability">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>Providing inventory insights</span>
+                                </div>
+                                <div class="ai-capability">
+                                    <i class="fas fa-question-circle"></i>
+                                    <span>Answering general questions</span>
+                                </div>
+                            </div>
+                            <div class="ai-suggestions">
+                                <h4>Try asking me:</h4>
+                                <div class="suggestion-chips">
+                                    <button class="suggestion-chip">What items are expiring soon?</button>
+                                    <button class="suggestion-chip">How much inventory do I have in each category?</button>
+                                    <button class="suggestion-chip">What are my top ordered items this month?</button>
+                                    <button class="suggestion-chip">How can I reduce waste in my inventory?</button>
+                                    <button class="suggestion-chip">What's my current inventory value?</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message-group">
+                            <div class="message-timestamp">Today, 10:30 AM</div>
+                            <div class="message user-message">
+                                <div class="message-content">
+                                    <p>What items in my inventory are expiring within the next week?</p>
+                                </div>
+                                <div class="user-avatar">
+                                    <img src="./images/user.png" alt="User">
+                                </div>
+                            </div>
+                            <div class="message ai-message">
+                                <div class="ai-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <p>I've found 8 items in your inventory that are expiring within the next week:</p>
+                                    <div class="ai-response-table">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Item</th>
+                                                    <th>Category</th>
+                                                    <th>Quantity</th>
+                                                    <th>Expiry Date</th>
+                                                    <th>Days Left</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="critical">
+                                                    <td>Fresh Milk</td>
+                                                    <td>Dairy</td>
+                                                    <td>2 L</td>
+                                                    <td>Mar 18, 2023</td>
+                                                    <td>1</td>
+                                                </tr>
+                                                <tr class="critical">
+                                                    <td>Chicken Breast</td>
+                                                    <td>Meat</td>
+                                                    <td>3 kg</td>
+                                                    <td>Mar 19, 2023</td>
+                                                    <td>2</td>
+                                                </tr>
+                                                <tr class="warning">
+                                                    <td>Tomatoes</td>
+                                                    <td>Produce</td>
+                                                    <td>5 kg</td>
+                                                    <td>Mar 20, 2023</td>
+                                                    <td>3</td>
+                                                </tr>
+                                                <tr class="warning">
+                                                    <td>Lettuce</td>
+                                                    <td>Produce</td>
+                                                    <td>2 kg</td>
+                                                    <td>Mar 21, 2023</td>
+                                                    <td>4</td>
+                                                </tr>
+                                                <tr class="upcoming">
+                                                    <td>Yogurt</td>
+                                                    <td>Dairy</td>
+                                                    <td>10 cups</td>
+                                                    <td>Mar 22, 2023</td>
+                                                    <td>5</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p>Would you like me to suggest ways to use these items before they expire?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ai-chat-input">
+                        <button id="voice-input-btn" class="neon-button">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <div class="ai-chat-input-container">
+                            <input type="text" id="ai-input-field" placeholder="Ask me anything about your inventory...">
+                            <button id="ai-send-button" class="neon-button">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/main.js"></script>
+    <script src="./js/ai-assistant.js"></script>
+</body>
+</html>
+
+.ai-chat-input {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    background: rgba(32, 44, 67, 0.6);
+    padding: 1rem;
+    border-radius: 0 0 15px 15px;
+    border-top: 1px solid rgba(78, 205, 196, 0.15);
+}
+
+.ai-chat-input-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: rgba(78, 205, 196, 0.05);
+    border: 1px solid rgba(78, 205, 196, 0.2);
+    box-shadow: 0 0 10px rgba(78, 205, 196, 0.1);
+    border-radius: 30px;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.ai-chat-input-container:focus-within {
+    border-color: rgba(78, 205, 196, 0.6);
+    box-shadow: 0 0 15px rgba(78, 205, 196, 0.4), 
+                inset 0 0 5px rgba(78, 205, 196, 0.1);
+}
+
+#ai-input-field {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    outline: none;
+}
+
+#ai-input-field::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
+}
+
+#ai-input-field:focus::placeholder {
+    color: rgba(78, 205, 196, 0.5);
+} 

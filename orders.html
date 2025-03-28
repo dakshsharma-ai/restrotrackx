@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Management - RestroTrack</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="./images/agentura.png" alt="RestroTrack Logo">
+                <h2>RestroTrack</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="inventory.html"><i class="fas fa-box"></i> <span>Inventory</span></a></li>
+                    <li class="active"><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                    <li><a href="expiry-tracker.html"><i class="fas fa-calendar-alt"></i> <span>Expiry Tracker</span></a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
+                    <li><a href="ai-chat.html"><i class="fas fa-robot"></i> <span>AI Chat</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Orders Management</h1>
+            </header>
+
+            <!-- Orders Overview Cards -->
+            <div class="orders-overview">
+                <div class="overview-card total-orders">
+                    <div class="card-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Orders</h3>
+                        <p id="total-orders-count">0</p>
+                    </div>
+                </div>
+                <div class="overview-card pending-orders">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Pending Orders</h3>
+                        <p id="pending-orders-count">0</p>
+                    </div>
+                </div>
+                <div class="overview-card scheduled-orders">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Scheduled Orders</h3>
+                        <p id="scheduled-orders-count">0</p>
+                    </div>
+                </div>
+                <div class="overview-card total-spent">
+                    <div class="card-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Money Spent</h3>
+                        <p id="total-spent">₹0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Order Button -->
+            <div class="action-buttons">
+                <button id="add-order-btn" class="neon-button">
+                    <i class="fas fa-plus"></i> Add New Order
+                </button>
+                <div class="view-toggle">
+                    <button id="view-pending" class="neon-button active">Pending Orders</button>
+                    <button id="view-completed" class="neon-button">Completed Orders</button>
+                </div>
+            </div>
+
+            <!-- Add Order Modal -->
+            <div id="add-order-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Add New Order</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form id="add-order-form">
+                        <div class="form-group">
+                            <label for="name">Item Name*</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category*</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Starters">Starters</option>
+                                <option value="Main Course">Main Course</option>
+                                <option value="Rice & Biryani">Rice & Biryani</option>
+                                <option value="Breads">Breads</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="Beverages">Beverages</option>
+                                <option value="Desserts">Desserts</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity*</label>
+                            <div class="quantity-container" style="display: flex; gap: 1rem;">
+                                <input type="number" id="quantity" name="quantity" min="1" required style="flex: 1;">
+                                <select id="unit" name="unit" required style="width: 120px;">
+                                    <option value="">Select Unit</option>
+                                    <option value="Plates">Plates</option>
+                                    <option value="Pieces">Pieces</option>
+                                    <option value="Kg">Kg</option>
+                                    <option value="Grams">Grams</option>
+                                    <option value="Liters">Liters</option>
+                                    <option value="ML">ML</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price (₹)*</label>
+                            <input type="number" id="price" name="price" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="delivery-date">Delivery Date*</label>
+                            <input type="date" id="delivery-date" name="deliveryDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="supplier">Supplier Name*</label>
+                            <input type="text" id="supplier" name="supplier" required placeholder="Enter supplier name">
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Special Instructions</label>
+                            <textarea id="notes" name="notes"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="neon-button">Add Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Orders Tables -->
+            <div id="pending-orders-section" class="orders-section">
+                <h2>Pending Orders</h2>
+                <div class="table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Delivery Date</th>
+                                <th>Supplier</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pending-orders-table"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="completed-orders-section" class="orders-section" style="display: none;">
+                <h2>Completed Orders</h2>
+                <div class="table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Delivery Date</th>
+                                <th>Supplier</th>
+                                <th>Completion Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="completed-orders-table"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Order Modal -->
+            <div id="edit-order-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Edit Order</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form id="edit-order-form">
+                        <input type="hidden" id="edit-order-id" name="orderId">
+                        <div class="form-group">
+                            <label for="edit-name">Item Name*</label>
+                            <input type="text" id="edit-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-category">Category*</label>
+                            <select id="edit-category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Starters">Starters</option>
+                                <option value="Main Course">Main Course</option>
+                                <option value="Rice & Biryani">Rice & Biryani</option>
+                                <option value="Breads">Breads</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="Beverages">Beverages</option>
+                                <option value="Desserts">Desserts</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-quantity">Quantity*</label>
+                            <div class="quantity-container" style="display: flex; gap: 1rem;">
+                                <input type="number" id="edit-quantity" name="quantity" min="1" required style="flex: 1;">
+                                <select id="edit-unit" name="unit" required style="width: 120px;">
+                                    <option value="">Select Unit</option>
+                                    <option value="Plates">Plates</option>
+                                    <option value="Pieces">Pieces</option>
+                                    <option value="Kg">Kg</option>
+                                    <option value="Grams">Grams</option>
+                                    <option value="Liters">Liters</option>
+                                    <option value="ML">ML</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-price">Price (₹)*</label>
+                            <input type="number" id="edit-price" name="price" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-delivery-date">Delivery Date*</label>
+                            <input type="date" id="edit-delivery-date" name="deliveryDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-supplier">Supplier Name*</label>
+                            <input type="text" id="edit-supplier" name="supplier" required placeholder="Enter supplier name">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-notes">Special Instructions</label>
+                            <textarea id="edit-notes" name="notes"></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="neon-button">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./js/orders.js"></script>
+</body>
+</html> 

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - RestroTrack</title>
+    <base href="./">
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="images/agentura.png" alt="RestroTrack Logo">
+                <h2>RestroTrack</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="inventory.html"><i class="fas fa-box"></i> <span>Inventory</span></a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                    <li><a href="expiry-tracker.html"><i class="fas fa-calendar-alt"></i> <span>Expiry Tracker</span></a></li>
+                    <li class="active"><a href="analytics.html"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
+                    <li><a href="ai-chat.html"><i class="fas fa-robot"></i> <span>AI Chat</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <header>
+                <div class="header-content">
+                    <h1>Analytics Dashboard</h1>
+                    <div class="date-filter">
+                        <select id="time-period" class="neon-select">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                        <div id="custom-date-range" class="custom-date-range">
+                            <input type="date" id="start-date">
+                            <input type="date" id="end-date">
+                            <button id="apply-date-range" class="neon-btn">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="analytics-container">
+                <div class="analytics-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon inventory-value-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3>Total Inventory Value</h3>
+                            <h2 id="total-inventory-value">₹0.00</h2>
+                            <p>Current stock value</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon orders-value-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3>Total Orders Value</h3>
+                            <h2 id="total-orders-value">₹0.00</h2>
+                            <p>All orders value</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon waste-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3>Average Order Value</h3>
+                            <h2 id="avg-order-value">₹0.00</h2>
+                            <p>Per order average</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-card">
+                        <div class="summary-icon efficiency-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3>Low Stock Value</h3>
+                            <h2 id="low-stock-value">₹0.00</h2>
+                            <p>Items with low quantity</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Inventory Value Trend</h3>
+                            <div class="card-actions">
+                                <button class="expand-btn"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="inventory-trend-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Category Distribution</h3>
+                            <div class="card-actions">
+                                <button class="expand-btn"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="category-distribution-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Order Value Trend</h3>
+                            <div class="card-actions">
+                                <button class="expand-btn"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="order-trend-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Top Items by Value</h3>
+                            <div class="card-actions">
+                                <button class="expand-btn"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="top-items-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Expiry Analysis</h3>
+                            <div class="card-actions">
+                                <button class="expand-btn"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="expiry-analysis-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <div class="card-header">
+                            <h3>Category Performance</h3>
+                            <div class="card-actions">
+                                <button class="expand-btn"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="category-performance-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-insights">
+                    <div class="insights-header">
+                        <h3><i class="fas fa-lightbulb"></i> AI-Powered Insights</h3>
+                        <button id="refresh-insights"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    <div class="insights-container" id="insights-container">
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>Inventory Optimization</h4>
+                                <p>Your dairy inventory is consistently 20% higher than needed based on usage patterns. Consider reducing order quantities.</p>
+                            </div>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>Seasonal Trend Detected</h4>
+                                <p>Produce usage increases by 35% during summer months. Plan your inventory accordingly for the upcoming season.</p>
+                            </div>
+                        </div>
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="insight-content">
+                                <h4>Waste Reduction Opportunity</h4>
+                                <p>Seafood items have the highest waste rate at 15%. Implementing a first-in-first-out system could reduce this by 40%.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Detail Modal -->
+        <div id="chart-detail-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="detail-chart-title">Chart Details</h2>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="detail-chart-container">
+                    <canvas id="detail-chart"></canvas>
+                </div>
+                <div class="detail-chart-controls">
+                    <div class="filter-options">
+                        <select class="neon-select">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                    </div>
+                    <button class="export-data-btn">
+                        <i class="fas fa-download"></i>
+                        Export Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-assistant-button">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="ai-assistant-panel">
+            <div class="ai-assistant-header">
+                <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+                <button class="close-assistant"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="ai-assistant-body">
+                <div class="ai-messages" id="ai-messages">
+                    <div class="ai-message">
+                        <div class="ai-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Hello! I'm your RestroTrack AI Assistant. How can I help you analyze your inventory data today?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ai-input">
+                    <input type="text" id="ai-input-field" placeholder="Ask me anything about your analytics...">
+                    <button id="ai-send-button"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .analytics-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .overview-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .overview-card.glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            animation: glowRotate 3s infinite linear;
+        }
+
+        @keyframes glowRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            background: linear-gradient(45deg, #4ECDC4, #556270);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .trend.positive {
+            color: #4ECDC4;
+        }
+
+        .trend.negative {
+            color: #FF6B6B;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .detailed-analysis {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .neon-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--button-bg);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .neon-button:hover::before {
+            left: 100%;
+        }
+
+        .neon-button.active {
+            background: var(--accent-primary);
+            box-shadow: 0 0 20px var(--accent-primary-shadow);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .analysis-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .progress-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .progress-circle svg {
+            width: 120px;
+            height: 120px;
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+
+        .progress-background {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar {
+            stroke: #4ECDC4;
+            stroke-dasharray: 339.292;
+            stroke-dashoffset: 339.292;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="js/analytics.js"></script>
+</body>
+</html> 

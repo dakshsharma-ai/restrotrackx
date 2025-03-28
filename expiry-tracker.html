@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expiry Tracker - RestroTrack</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="./images/agentura.png" alt="RestroTrack Logo">
+                <h2>RestroTrack</h2>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="inventory.html"><i class="fas fa-box"></i> <span>Inventory</span></a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
+                    <li class="active"><a href="expiry-tracker.html"><i class="fas fa-calendar-alt"></i> <span>Expiry Tracker</span></a></li>
+                    <li><a href="analytics.html"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
+                    <li><a href="ai-chat.html"><i class="fas fa-robot"></i> <span>AI Chat</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h1>Expiry Tracker</h1>
+            </header>
+
+            <!-- Expiry Overview Cards -->
+            <div class="expiry-overview">
+                <div class="expiry-card critical glow-effect">
+                    <div class="card-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Critical</h3>
+                        <p class="subtitle">Expiring in ≤2 days</p>
+                        <p id="critical-count" class="count">0</p>
+                    </div>
+                </div>
+                <div class="expiry-card warning glow-effect">
+                    <div class="card-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Warning</h3>
+                        <p class="subtitle">Expiring in ≤4 days</p>
+                        <p id="warning-count" class="count">0</p>
+                    </div>
+                </div>
+                <div class="expiry-card upcoming glow-effect">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Upcoming</h3>
+                        <p class="subtitle">Expiring in ≤7 days</p>
+                        <p id="upcoming-count" class="count">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expiring Items Section -->
+            <section class="expiring-items-section">
+                <div class="section-header">
+                    <h2>Expiring Items Analysis</h2>
+                    <div class="filter-buttons">
+                        <button id="show-critical" class="neon-button active">Critical</button>
+                        <button id="show-warning" class="neon-button">Warning</button>
+                        <button id="show-upcoming" class="neon-button">Upcoming</button>
+                        <button id="show-all" class="neon-button">All</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Expiry Date</th>
+                                <th>Days Left</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expiring-items-table"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <style>
+        /* Expiry Overview Cards */
+        .expiry-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .expiry-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .expiry-card.glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            animation: glowRotate 3s infinite linear;
+        }
+
+        @keyframes glowRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .expiry-card.critical {
+            border: 2px solid #FF6B6B;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+        }
+
+        .expiry-card.warning {
+            border: 2px solid #FFD93D;
+            box-shadow: 0 0 20px rgba(255, 217, 61, 0.2);
+        }
+
+        .expiry-card.upcoming {
+            border: 2px solid #4ECDC4;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.2);
+        }
+
+        .expiry-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .expiry-card .card-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .expiry-card.critical .card-icon {
+            color: #FF6B6B;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .expiry-card.warning .card-icon {
+            color: #FFD93D;
+            background: rgba(255, 217, 61, 0.1);
+        }
+
+        .expiry-card.upcoming .card-icon {
+            color: #4ECDC4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .expiry-card .card-content {
+            flex: 1;
+        }
+
+        .expiry-card h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .expiry-card .subtitle {
+            margin: 0.25rem 0;
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        .expiry-card .count {
+            margin: 0.5rem 0 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        /* Filter Buttons */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .neon-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--button-bg);
+            color: var(--text-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .neon-button:hover::before {
+            left: 100%;
+        }
+
+        .neon-button.active {
+            background: var(--accent-primary);
+            box-shadow: 0 0 20px var(--accent-primary-shadow);
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .items-table th,
+        .items-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .items-table th {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .items-table tbody tr {
+            transition: background-color 0.3s ease;
+        }
+
+        .items-table tbody tr:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-critical {
+            background: rgba(255, 107, 107, 0.1);
+            color: #FF6B6B;
+        }
+
+        .status-warning {
+            background: rgba(255, 217, 61, 0.1);
+            color: #FFD93D;
+        }
+
+        .status-upcoming {
+            background: rgba(78, 205, 196, 0.1);
+            color: #4ECDC4;
+        }
+    </style>
+
+    <script src="./js/expiry-tracker.js"></script>
+</body>
+</html> 
